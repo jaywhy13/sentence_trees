@@ -1,0 +1,28 @@
+from setuptools import setup
+
+setup(name='sentence_trees',
+      version='0.1',
+      description='Sentence trees - a package built allows trees to be built from a list of sentences to allow for auto-completion',
+      url='http://github.com/jaywhy13/sentence_trees',
+      author='Jean-Mark Wright',
+      author_email='jeanmark.wright@gmail.com',
+      license='MIT',
+      packages=['sentence_trees'],
+      install_requires = [
+	      'Django==1.5.5',
+            'argparse==1.2.1',
+            'pyparsing==2.0.1',
+            'wsgiref==0.1.2',
+            'django-extensions==1.2.5',
+            'node==0.9.12',
+            'odict==1.5.1',
+            'plumber==1.2',
+            'six==1.4.1',
+            'wsgiref==0.1.2',
+            'zope.component==4.1.0',
+            'zope.deprecation==4.0.2',
+            'zope.event==4.0.2',
+            'zope.interface==4.0.5',
+            'zope.lifecycleevent==4.0.3',
+      ],
+      zip_safe=False)
