@@ -3,6 +3,8 @@ import types
 from node.base import BaseNode
 
 class SentenceTreeNode(BaseNode):
+	""" A node in the sentence tree represents a word
+	"""
 
 	def __init__(self, word):
 		super(SentenceTreeNode, self).__init__(word)
@@ -55,12 +57,12 @@ class SentenceTreeNode(BaseNode):
 		return [ node.name for node in nodes ]
 
 
-	def add_sentence(self, words):
-		""" Adds a sentence to the tree
+	def add_sentence(self, sentence):
+		""" Adds a sentence to the tree and returns the leaf node
 		"""
 		parent_node = self
 		word_node = None
-		for word in words:
+		for word in sentence:
 			if word not in parent_node:
 				# add the word to the tree
 				word_node = self.create_node(word)
@@ -85,6 +87,8 @@ class SentenceTreeNode(BaseNode):
 		return sentences
 
 class SentenceTree(SentenceTreeNode):
+	""" A sentence tree is simply a tree of words
+	"""
 
 	def __init__(self):
 		super(SentenceTree, self).__init__("root")
