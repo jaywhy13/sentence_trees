@@ -1,6 +1,9 @@
 import types
 
 from node.base import BaseNode
+import fuzzy
+
+soundex = fuzzy.Soundex(4)
 
 class SentenceTreeNode(BaseNode):
 	""" A node in the sentence tree represents a word
@@ -8,6 +11,8 @@ class SentenceTreeNode(BaseNode):
 
 	def __init__(self, word):
 		super(SentenceTreeNode, self).__init__(word)
+		# Keep track of each nodes by their phonetic value
+		self.soundex_codes = {}
 
 	def create_node(self, word):
 		""" Creates a new node
@@ -23,10 +28,10 @@ class SentenceTreeNode(BaseNode):
 		return len(self.get_sentences())
 
 	def sentence_in_tree(self, sentence):
-		return self.words_in_tree(sentence.split())
+		return self.subtree_exists(sentence.split())
 
-	def words_in_tree(self, words):
-		""" Returns True if the words exist in the tree
+	def subtree_exists(self, words):
+		""" Returns True if the words exist in the tree starting at the root
 		"""
 		parent_node = self
 		for word in words:
@@ -40,7 +45,7 @@ class SentenceTreeNode(BaseNode):
 		""" Returns a list of possible words after a phrase
 		"""
 		words = words.split() if type(words) == types.StringType else words
-		if not self.words_in_tree(words):
+		if not self.subtree_exists(words):
 			return []
 
 		nodes = []
@@ -57,6 +62,30 @@ class SentenceTreeNode(BaseNode):
 		return [ node.name for node in nodes ]
 
 
+	def add_soundex_code(self, word, word_node):
+		""" Adds the node's soundex code to a hash to enable very fast searching 
+			of the tree
+		"""
+		code = soundex(word)
+		nodes = self.soundex_codes.get(code, [])
+		nodes.append(word_node)
+		self.soundex_codes[code] = nodes
+
+	def search(self, query):
+		""" Allows the user to search the tree for a query
+		"""
+		nodes = []
+		code = soundex(query)
+		if code in self.soundex_codes:
+			nodes = self.soundex_codes.get(code)
+		else:
+			words = query.split()
+			if len(words) > 1:
+				for word in words:
+					nodes.extend(self.search(word))
+		return nodes
+
+
 	def add_sentence(self, sentence):
 		""" Adds a sentence to the tree and returns the leaf node
 		"""
@@ -68,6 +97,7 @@ class SentenceTreeNode(BaseNode):
 				word_node = self.create_node(word)
 				parent_node[word] = word_node
 				parent_node = word_node
+				self.add_soundex_code(word, word_node)
 			else:
 				parent_node = parent_node[word]
 		return word_node
