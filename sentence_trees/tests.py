@@ -37,3 +37,12 @@ class SentenceTest(TestCase):
     	self.assertEquals(sentence_tree.get_words_after("The boy"), ["jumped"])
     	self.assertEquals(sentence_tree.get_words_after("The girl"), ["did", "phoned"])
 
+        # test search 
+        results = [ node.sentence for node in sentence_tree.search("home") ]
+        self.assertIn("The girl phoned home".split(), results)
+
+        # test soundex
+        results = [ node.sentence for node in sentence_tree.search("hoome") ]
+        self.assertIn("The girl phoned home".split(), results)
+
+
