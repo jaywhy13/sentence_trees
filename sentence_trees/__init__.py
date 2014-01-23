@@ -14,6 +14,15 @@ class SentenceTreeNode(BaseNode):
 		# Keep track of each nodes by their phonetic value
 		self.soundex_codes = {}
 
+	@property
+	def depth(self):
+		d = 0
+		node = self
+		while node is not None:
+			d += 1
+			node = self.parent
+		return d
+
 	def create_node(self, word):
 		""" Creates a new node
 		"""
@@ -89,9 +98,12 @@ class SentenceTreeNode(BaseNode):
 	def add_sentence(self, sentence):
 		""" Adds a sentence to the tree and returns the leaf node
 		"""
+		if type(sentence) == types.StringType:
+			sentence = sentence.split()
 		parent_node = self
 		word_node = None
 		for word in sentence:
+			last_word = sentence[-1:] == [word]
 			if word not in parent_node:
 				# add the word to the tree
 				word_node = self.create_node(word)
@@ -100,6 +112,8 @@ class SentenceTreeNode(BaseNode):
 				self.add_soundex_code(word, word_node)
 			else:
 				parent_node = parent_node[word]
+		if not word_node:
+			return parent_node
 		return word_node
 
 	def get_sentences(self):
