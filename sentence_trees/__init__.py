@@ -20,7 +20,7 @@ class SentenceTreeNode(BaseNode):
 		node = self
 		while node is not None:
 			d += 1
-			node = self.parent
+			node = node.parent
 		return d
 
 	def create_node(self, word):

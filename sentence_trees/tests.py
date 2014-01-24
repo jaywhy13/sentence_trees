@@ -17,7 +17,9 @@ class SentenceTest(TestCase):
 
     	sentence_tree = SentenceTree()
     	for sentence in sentences:
-    		sentence_tree.add_sentence(sentence.split())
+            words = sentence.split()
+            node = sentence_tree.add_sentence(words)
+            self.assertEquals(node.depth-1, len(words))
 
     	tree_sentences = sentence_tree.get_sentences()
 
