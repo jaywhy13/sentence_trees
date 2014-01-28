@@ -95,8 +95,10 @@ class SentenceTreeNode(BaseNode):
 		return nodes
 
 
-	def add_sentence(self, sentence):
-		""" Adds a sentence to the tree and returns the leaf node
+	def add_sentence(self, sentence, process_node=None):
+		""" Adds a sentence to the tree and returns the leaf node.
+			A process_node function can be passed in to process the node
+			after it's created.
 		"""
 		if type(sentence) == types.StringType:
 			sentence = sentence.split()
@@ -107,6 +109,8 @@ class SentenceTreeNode(BaseNode):
 			if word not in parent_node:
 				# add the word to the tree
 				word_node = self.create_node(word)
+				if process_node:
+					process_node(word_node)
 				parent_node[word] = word_node
 				parent_node = word_node
 				self.add_soundex_code(word, word_node)
