@@ -47,4 +47,10 @@ class SentenceTest(TestCase):
         results = [ node.sentence for node in sentence_tree.search("hoome") ]
         self.assertIn("The girl phoned home".split(), results)
 
+        # test node listing
+        for sentence in sentences:
+            words = sentence.split()
+            nodes = sentence_tree.get_nodes(sentence)
+            self.assertEquals(len(nodes), len(words))
+            self.assertEquals(sentence_tree.get_leaf_node(sentence).name, words[-1])
 

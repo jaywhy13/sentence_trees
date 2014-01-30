@@ -39,6 +39,25 @@ class SentenceTreeNode(BaseNode):
 	def sentence_in_tree(self, sentence):
 		return self.subtree_exists(sentence.split())
 
+	def get_nodes(self, sentence):
+		""" Returns all the node in the tree for the sentence
+		"""
+		nodes = []
+		parent_node = self
+		if self.sentence_in_tree(sentence):
+			words = sentence.split()
+			for word in words:
+				if word in parent_node:
+					parent_node = parent_node[word]
+					nodes.append(parent_node)
+		return nodes
+
+	def get_leaf_node(self, sentence):
+		""" Returns the last node in the tree for the sentence
+		"""
+		if self.sentence_in_tree(sentence):
+			return self.get_nodes(sentence)[-1]
+
 	def subtree_exists(self, words):
 		""" Returns True if the words exist in the tree starting at the root
 		"""
