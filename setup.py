@@ -9,7 +9,7 @@ setup(name='sentence_trees',
       license='MIT',
       packages=['sentence_trees'],
       install_requires=[
-            'Django==1.5.5,<=2.0.0',
+            'Django>=1.5.5,<=2.0.0',
             'argparse==1.2.1',
             'pyparsing==2.0.1',
             'wsgiref==0.1.2',
